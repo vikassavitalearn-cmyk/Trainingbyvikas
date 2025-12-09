@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Google Sheets & Dashboard Training</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Google Sheets training, Excel training, Looker Studio dashboards, Google Slides training, and daily report automation."
+  />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-light: #111827;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.12);
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --card: #111827;
+      --border: #1f2937;
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.45);
+      --radius-xl: 18px;
+      --radius-2xl: 24px;
+      --radius-pill: 999px;
+      --transition: 0.22s ease;
+      --max-width: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 52%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* Layout */
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(20px);
+      background: linear-gradient(
+        to bottom,
+        rgba(15, 23, 42, 0.94),
+        rgba(15, 23, 42, 0.9),
+        transparent
+      );
+      border-bottom: 1px solid rgba(15, 23, 42, 0.6);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+    }
+
+    .logo-mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 30% 20%, #bbf7d0 0, #22c55e 32%, #4ade80 60%, #0f172a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: #022c22;
+      box-shadow: 0 8px 28px rgba(34, 197, 94, 0.68);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      padding: 0.35rem 0.6rem;
+      border-radius: 999px;
+      transition: color var(--transition), background var(--transition),
+        transform var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: #f9fafb;
+      background: rgba(148, 163, 184, 0.14);
+      transform: translateY(-1px);
+    }
+
+    .nav-cta {
+      display: none;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      border-radius: var(--radius-pill);
+      padding: 0.7rem 1.4rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border: 1px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background var(--transition), transform var(--transition),
+        box-shadow var(--transition), border-color var(--transition),
+        color var(--transition);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #22c55e, #4ade80);
+      color: #022c22;
+      box-shadow: 0 16px 35px rgba(34, 197, 94, 0.55);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px) translateZ(0);
+      box-shadow: 0 22px 45px rgba(34, 197, 94, 0.75);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border-color: rgba(148, 163, 184, 0.6);
+    }
+
+    .btn-outline:hover {
+      background: rgba(15, 23, 42, 0.8);
+      border-color: rgba(148, 163, 184, 0.9);
+      transform: translateY(-1px);
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .section {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 3.5rem 1.25rem;
+    }
+
+    .section-narrow {
+      max-width: 880px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: var(--radius-pill);
+      background: rgba(148, 163, 184, 0.12);
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 0.9rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.7rem, 2.3vw, 2.1rem);
+      margin: 0;
+      margin-bottom: 0.7rem;
+    }
+
+    .section-subtitle {
+      margin: 0 auto;
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    /* Hero */
+
+    .hero {
+      padding-top: 4.2rem;
+      padding-bottom: 3.2rem;
+      display: grid;
+      grid-template-columns: minmax(0, 3.2fr) minmax(0, 2.6fr);
+      gap: 2.8rem;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.25rem 0.55rem;
+      border-radius: var(--radius-pill);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--muted);
+      font-size: 0.75rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2rem, 3.4vw, 2.8rem);
+      letter-spacing: -0.03em;
+      margin: 0 0 0.8rem;
+    }
+
+    .hero-highlight {
+      background: linear-gradient(120deg, #bbf7d0, #4ade80);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-text {
+      max-width: 34rem;
+      color: var(--muted);
+      font-size: 0.98rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.85rem;
+      margin-bottom: 1.3rem;
+    }
+
+    .hero-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.85rem;
+      margin-top: 1.6rem;
+      max-width: 30rem;
+    }
+
+    .hero-chip {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 0.3rem 0.8rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .hero-chip-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3);
+    }
+
+    .hero-right {
+      position: relative;
+    }
+
+    .hero-card {
+      position: relative;
+      border-radius: var(--radius-2xl);
+      padding: 1.4rem 1.25rem;
+      background: radial-gradient(circle at top left, #1e293b 0, #020617 65%);
+      border: 1px solid rgba(51, 65, 85, 0.8);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .hero-card-glow {
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(
+          circle at top left,
+          rgba(45, 212, 191, 0.12),
+          transparent 55%
+        ),
+        radial-gradient(
+          circle at bottom right,
+          rgba(34, 197, 94, 0.1),
+          transparent 52%
+        );
+      opacity: 0.9;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .hero-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .hero-card-title {
+      font-size: 0.88rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+
+    .hero-card-pill {
+      border-radius: var(--radius-pill);
+      padding: 0.2rem 0.55rem;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.7rem;
+      margin-bottom: 1rem;
+    }
+
+    .metric {
+      border-radius: 14px;
+      padding: 0.55rem 0.6rem;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(51, 65, 85, 0.95);
+    }
+
+    .metric-label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-bottom: 0.15rem;
+    }
+
+    .metric-value {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .metric-tag {
+      font-size: 0.7rem;
+      color: #22c55e;
+      margin-top: 0.1rem;
+    }
+
+    .hero-list {
+      margin: 0.6rem 0 1.1rem;
+      padding-left: 1.1rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .hero-list li + li {
+      margin-top: 0.25rem;
+    }
+
+    .hero-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.7rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.6rem;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-pill);
+      background: rgba(22, 163, 74, 0.16);
+      color: #bbf7d0;
+      font-size: 0.74rem;
+      border: 1px solid rgba(34, 197, 94, 0.7);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .hero-float {
+      position: absolute;
+      inset: auto auto -16px -22px;
+      transform: translateY(-18%);
+      border-radius: 16px;
+      padding: 0.55rem 0.7rem;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(51, 65, 85, 0.95);
+      font-size: 0.76rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.7);
+    }
+
+    .hero-float span {
+      font-weight: 500;
+      color: #e5e7eb;
+    }
+
+    /* Services */
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.4rem;
+    }
+
+    .card {
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      padding: 1.1rem 1.1rem 1.15rem;
+      background: radial-gradient(circle at top left, #020617 0, #020617 55%);
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.75);
+      transition: transform var(--transition), box-shadow var(--transition),
+        border-color var(--transition), background var(--transition),
+        translate var(--transition);
+    }
+
+    .card:hover {
+      transform: translateY(-4px) translateZ(0);
+      border-color: rgba(148, 163, 184, 0.9);
+      box-shadow: 0 22px 50px rgba(15, 23, 42, 1);
+      background: radial-gradient(circle at top left, #020617 0, #020617 40%);
+    }
+
+    .card-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      background: rgba(34, 197, 94, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .card-title {
+      font-size: 0.98rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .card-sub {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.55rem;
+    }
+
+    .card-list {
+      padding-left: 1.1rem;
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .card-list li + li {
+      margin-top: 0.16rem;
+    }
+
+    /* Why me / features */
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 2.1fr);
+      gap: 2.4rem;
+      align-items: center;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.85rem;
+    }
+
+    .pill {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 0.25rem 0.7rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .why-card {
+      border-radius: var(--radius-2xl);
+      padding: 1.4rem 1.25rem;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .why-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.1rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .why-item-title {
+      font-size: 0.83rem;
+      font-weight: 500;
+      margin-bottom: 0.15rem;
+      color: #e5e7eb;
+    }
+
+    /* Portfolio */
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.1rem;
+    }
+
+    .portfolio-card {
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 0.85rem;
+      background: radial-gradient(circle at top, #020617 0, #020617 60%);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .portfolio-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      border-radius: 999px;
+      padding: 0.15rem 0.5rem;
+      font-size: 0.72rem;
+      background: var(--accent-soft);
+      color: #bbf7d0;
+      margin-bottom: 0.3rem;
+    }
+
+    .portfolio-title {
+      font-size: 0.9rem;
+      margin-bottom: 0.2rem;
+      color: #e5e7eb;
+    }
+
+    .portfolio-meta {
+      font-size: 0.75rem;
+      opacity: 0.9;
+    }
+
+    /* Contact */
+
+    .contact {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.5fr);
+      gap: 2.2rem;
+      align-items: center;
+    }
+
+    .contact-highlight {
+      border-radius: 18px;
+      padding: 1rem 1.1rem;
+      border: 1px dashed rgba(148, 163, 184, 0.55);
+      background: rgba(15, 23, 42, 0.85);
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.9rem;
+    }
+
+    .contact-form {
+      border-radius: var(--radius-2xl);
+      padding: 1.4rem 1.25rem 1.35rem;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.85rem;
+    }
+
+    .form-group {
+      margin-bottom: 0.9rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      margin-bottom: 0.25rem;
+      color: var(--muted);
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 0.55rem 0.65rem;
+      font-size: 0.85rem;
+      background: rgba(15, 23, 42, 0.88);
+      color: #e5e7eb;
+      outline: none;
+      transition: border-color var(--transition),
+        box-shadow var(--transition), background var(--transition);
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: rgba(34, 197, 94, 0.9);
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.5);
+      background: rgba(15, 23, 42, 1);
+    }
+
+    textarea {
+      min-height: 90px;
+      max-height: 180px;
+    }
+
+    .form-footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-top: 0.6rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* Footer */
+
+    footer {
+      border-top: 1px solid rgba(15, 23, 42, 0.8);
+      background: radial-gradient(circle at top, #020617 0, #020617 55%);
+    }
+
+    .footer-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 2.1rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .footer-links a {
+      opacity: 0.8;
+    }
+
+    /* Floating WhatsApp */
+
+    .whatsapp-fab {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 60;
+      border-radius: 999px;
+      background: #22c55e;
+      color: #022c22;
+      padding: 0.7rem 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      box-shadow: 0 18px 35px rgba(22, 163, 74, 0.85);
+      border: 1px solid rgba(34, 197, 94, 0.1);
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition),
+        background var(--transition);
+    }
+
+    .whatsapp-fab:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 24px 45px rgba(22, 163, 74, 1);
+      background: #4ade80;
+    }
+
+    /* Responsive */
+
+    @media (max-width: 960px) {
+      .hero,
+      .contact,
+      .why-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-right {
+        order: -1;
+      }
+
+      .hero {
+        padding-top: 3.5rem;
+      }
+
+      .services-grid,
+      .portfolio-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .nav-cta {
+        display: inline-flex;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        padding-top: 3rem;
+        gap: 2rem;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .services-grid,
+      .portfolio-grid,
+      .why-row,
+      .form-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .section {
+        padding-inline: 1rem;
+      }
+
+      .whatsapp-fab {
+        padding-inline: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- Header / Nav -->
+    <header>
+      <div class="nav-inner">
+        <div class="logo">
+          <div class="logo-mark">GS</div>
+          <div>
+            <div>Sheet & Dashboard</div>
+            <div style="font-size: 0.7rem; color: var(--muted); text-transform: none;">
+              Training & Reporting
+            </div>
+          </div>
+        </div>
+        <nav class="nav-links">
+          <a href="#services">Services</a>
+          <a href="#why">Why me</a>
+          <a href="#portfolio">Samples</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <a
+          href="https://wa.me/918445030767?text=Hi%2C%20I%20am%20interested%20in%20your%20Google%20Sheets%20%2F%20dashboard%20training."
+          class="btn btn-primary nav-cta"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          WhatsApp
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="section hero" id="top">
+        <div class="hero-left">
+          <div class="hero-badge">
+            <span>✅ Reporting • Dashboards • Training</span>
+          </div>
+          <h1 class="hero-title">
+            Build smarter reports with
+            <span class="hero-highlight">Google Sheets, Excel & Looker Studio.</span>
+          </h1>
+          <p class="hero-text">
+            I create automated daily reports, interactive dashboards, and provide
+            practical training in Google Sheets, Excel, Google Slides and Looker Studio
+            for individuals, teams and small businesses.
+          </p>
+
+          <div class="hero-actions">
+            <a
+              href="https://wa.me/918445030767?text=Hi%2C%20I%20want%20to%20know%20more%20about%20your%20reporting%20%2F%20training%20services."
+              class="btn btn-primary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              💬 Chat on WhatsApp
+            </a>
+            <a href="#services" class="btn btn-outline">View all services</a>
+          </div>
+
+          <p class="hero-note">
+            No complex theory — everything is taught with real business examples,
+            dashboards and daily report use cases.
+          </p>
+
+          <div class="hero-grid">
+            <div class="hero-chip">
+              <div class="hero-chip-dot"></div>
+              Live 1-to-1 & group training
+            </div>
+            <div class="hero-chip">Custom daily & monthly reports</div>
+            <div class="hero-chip">Google Sheets & Excel advanced formulas</div>
+            <div class="hero-chip">Looker Studio dashboards from Sheets</div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="hero-card">
+            <div class="hero-card-glow"></div>
+            <div class="hero-card-header">
+              <div>
+                <div class="hero-card-title">Live Reporting Snapshot</div>
+                <div style="font-size: 0.8rem; color: var(--text); margin-top: 0.25rem;">
+                  Example: Google Sheets + Looker Studio for daily sales reporting
+                </div>
+              </div>
+              <div class="hero-card-pill">Made in Google Sheets</div>
+            </div>
+
+            <div class="hero-metrics">
+              <div class="metric">
+                <div class="metric-label">Time saved</div>
+                <div class="metric-value">12 hrs/week</div>
+                <div class="metric-tag">with automation</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Reports</div>
+                <div class="metric-value">+18</div>
+                <div class="metric-tag">daily & monthly</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Sources</div>
+                <div class="metric-value">Sheets, Forms</div>
+                <div class="metric-tag">→ dashboards</div>
+              </div>
+            </div>
+
+            <ul class="hero-list">
+              <li>Master formulas, pivots & data cleaning in Google Sheets and Excel.</li>
+              <li>Convert raw data into dashboards using Looker Studio.</li>
+              <li>Standardize and automate your daily / weekly reporting formats.</li>
+            </ul>
+
+            <div class="hero-card-footer">
+              <div class="status-pill">
+                <div class="status-dot"></div>
+                Slots open for new training & projects
+              </div>
+              <div>Get a free 10-min WhatsApp consultation.</div>
+            </div>
+
+            <div class="hero-float">
+              📊 <span>Ask for a sample dashboard link</span> (Google Sheets or Looker Studio)
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Services -->
+      <section class="section" id="services">
+        <div class="section-header">
+          <div class="section-kicker">Services</div>
+          <h2 class="section-title">What I can help you with</h2>
+          <p class="section-subtitle">
+            From one-time dashboards to full training programs, everything is designed
+            around real-world business data and reporting needs.
+          </p>
+        </div>
+
+        <div class="services-grid">
+          <article class="card">
+            <div class="card-icon">📈</div>
+            <h3 class="card-title">Google Sheets Works & Automation</h3>
+            <p class="card-sub">Set up powerful spreadsheets that work for you.</p>
+            <ul class="card-list">
+              <li>Data cleaning & formatting</li>
+              <li>Formulas, pivot tables & charts</li>
+              <li>Automated summaries & KPIs</li>
+              <li>Connect with Google Forms & more</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="card-icon">🧮</div>
+            <h3 class="card-title">Excel Training & Reporting</h3>
+            <p class="card-sub">Hands-on Excel sessions with business use cases.</p>
+            <ul class="card-list">
+              <li>Beginner to advanced formulas</li>
+              <li>MIS reports & dashboards</li>
+              <li>Data validation & cleaning</li>
+              <li>Short practice projects</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="card-icon">📊</div>
+            <h3 class="card-title">Looker Studio Dashboards</h3>
+            <p class="card-sub">Interactive dashboards from your existing data.</p>
+            <ul class="card-list">
+              <li>Connect Google Sheets & other sources</li>
+              <li>Design sales/marketing/finance dashboards</li>
+              <li>Shareable links for your team</li>
+              <li>Scheduled report emails</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="card-icon">🕒</div>
+            <h3 class="card-title">Daily & Monthly Report Making</h3>
+            <p class="card-sub">Standardize how your team reports performance.</p>
+            <ul class="card-list">
+              <li>Custom report templates (daily/weekly/monthly)</li>
+              <li>Automated summaries & totals</li>
+              <li>Team-friendly input formats</li>
+              <li>Ready to plug into dashboards</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="card-icon">📚</div>
+            <h3 class="card-title">Google Sheets Training</h3>
+            <p class="card-sub">From basics to advanced, with live guidance.</p>
+            <ul class="card-list">
+              <li>Formulas, pivots, charts & filters</li>
+              <li>Data cleaning and lookup functions</li>
+              <li>Live practice with your own data</li>
+              <li>1-to-1 and small group options</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="card-icon">🖥️</div>
+            <h3 class="card-title">Google Slides & Looker Studio Training</h3>
+            <p class="card-sub">Present and visualize data like a pro.</p>
+            <ul class="card-list">
+              <li>Google Slides for business presentations</li>
+              <li>Converting Sheets data into visuals</li>
+              <li>Step-by-step Looker Studio training</li>
+              <li>Best practices for data storytelling</li>
+            </ul>
+          </article>
+        </div>
+
+        <div style="text-align: center; margin-top: 2.1rem;">
+          <a
+            href="https://wa.me/918445030676?text=Hi%2C%20I%20want%20to%20discuss%20your%20services."
+            class="btn btn-outline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            💬 Tell me what you need on WhatsApp
+          </a>
+        </div>
+      </section>
+
+      <!-- Why me -->
+      <section class="section" id="why">
+        <div class="section-header section-narrow">
+          <div class="section-kicker">Why work together?</div>
+          <h2 class="section-title">Practical, simple and focused on results</h2>
+          <p class="section-subtitle">
+            The goal is not just “learning functions” — it’s building a reporting
+            system that actually saves you time and gives you clarity every day.
+          </p>
+        </div>
+
+        <div class="why-grid">
+          <div>
+            <p>
+              Whether you’re a founder, manager, analyst or student, the sessions and
+              setups are tailored to your exact use case:
+            </p>
+            <div class="pill-list">
+              <span class="pill">Real business data</span>
+              <span class="pill">Short, action-based sessions</span>
+              <span class="pill">Templates you can reuse</span>
+              <span class="pill">Support over WhatsApp</span>
+            </div>
+            <div class="contact-highlight">
+              💡 <strong>Idea:</strong> Start with a single reporting problem
+              (for example daily sales, attendance, or marketing performance) and
+              turn it into a clean sheet + dashboard during the first engagement.
+            </div>
+          </div>
+
+          <div class="why-card">
+            <div class="why-row">
+              <div>
+                <div class="why-item-title">Practical sessions only</div>
+                <p>
+                  No long theory slides. Everything is based on live walkthroughs in
+                  Google Sheets, Excel, Slides, and Looker Studio with real examples.
+                </p>
+              </div>
+              <div>
+                <div class="why-item-title">Custom for your role</div>
+                <p>
+                  Different tracks for business owners, managers, analysts and students
+                  so you learn what you actually need for your work.
+                </p>
+              </div>
+              <div>
+                <div class="why-item-title">Reusable templates</div>
+                <p>
+                  Get report formats and dashboards you can duplicate for other
+                  projects and teams in the future.
+                </p>
+              </div>
+              <div>
+                <div class="why-item-title">Ongoing support</div>
+                <p>
+                  Have a doubt later? Reach out on WhatsApp for short clarifications
+                  instead of getting stuck alone.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Portfolio / Samples -->
+      <section class="section" id="portfolio">
+        <div class="section-header">
+          <div class="section-kicker">Sample work</div>
+          <h2 class="section-title">Example dashboards & reports</h2>
+          <p class="section-subtitle">
+            These are typical setups that can be created or taught for your business.
+            Replace the descriptions with your own project details and links.
+          </p>
+        </div>
+
+        <div class="portfolio-grid">
+          <article class="portfolio-card">
+            <div class="portfolio-tag">Google Sheets → Looker Studio</div>
+            <h3 class="portfolio-title">Daily Sales Dashboard</h3>
+            <p>
+              Sales performance by day, product and region with auto-refresh from
+              Google Sheets.
+            </p>
+            <div class="portfolio-meta">Metrics: revenue, orders, AOV, top products.</div>
+          </article>
+
+          <article class="portfolio-card">
+            <div class="portfolio-tag">Excel Reporting</div>
+            <h3 class="portfolio-title">Monthly MIS Report</h3>
+            <p>
+              Excel-based MIS with pivot tables, charts and summary pages for
+              management review.
+            </p>
+            <div class="portfolio-meta">Ideal for finance and operations teams.</div>
+          </article>
+
+          <article class="portfolio-card">
+            <div class="portfolio-tag">Google Sheets Template</div>
+            <h3 class="portfolio-title">Team Attendance & Productivity</h3>
+            <p>
+              Centralized sheet for daily attendance, tasks and productivity tracking
+              with auto-summary.
+            </p>
+            <div class="portfolio-meta">Can be combined with dashboards later.</div>
+          </article>
+
+          <article class="portfolio-card">
+            <div class="portfolio-tag">Google Slides</div>
+            <h3 class="portfolio-title">Management Presentation Deck</h3>
+            <p>
+              Data-driven monthly presentation directly connected to Google Sheets,
+              always up-to-date.
+            </p>
+            <div class="portfolio-meta">Great for board reviews & client updates.</div>
+          </article>
+
+          <article class="portfolio-card">
+            <div class="portfolio-tag">Training Program</div>
+            <h3 class="portfolio-title">Google Sheets for Teams</h3>
+            <p>
+              4–6 live sessions teaching exactly what your team needs for their daily
+              work.
+            </p>
+            <div class="portfolio-meta">Includes Q&A and custom examples.</div>
+          </article>
+
+          <article class="portfolio-card">
+            <div class="portfolio-tag">Automation</div>
+            <h3 class="portfolio-title">Email Reporting Setup</h3>
+            <p>
+              Set up automated email summaries from Sheets or dashboards on a daily or
+              weekly schedule.
+            </p>
+            <div class="portfolio-meta">Keeps everyone aligned without manual effort.</div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section class="section" id="contact">
+        <div class="section-header section-narrow">
+          <div class="section-kicker">Contact</div>
+          <h2 class="section-title">Tell me what you’re working on</h2>
+          <p class="section-subtitle">
+            Share a few lines about your current reporting or training needs.
+            You’ll get a reply on WhatsApp with possible options and next steps.
+          </p>
+        </div>
+
+        <div class="contact">
+          <div>
+            <h3 style="margin-top: 0; margin-bottom: 0.6rem; font-size: 1.05rem;">
+              Fastest way: WhatsApp message
+            </h3>
+            <p>
+              Click the button below to start a WhatsApp chat. You can send:
+            </p>
+            <ul class="card-list" style="margin-top: 0.4rem;">
+              <li>A short description of your project</li>
+              <li>Whether you want training or done-for-you work</li>
+              <li>Your preferred timings and language</li>
+            </ul>
+            <div style="margin-top: 1.1rem;">
+              <a
+                href="https://wa.me/918445030767?text=Hi%2C%20I%20would%20like%20to%20discuss%20Google%20Sheets%20%2F%20Excel%20%2F%20Looker%20Studio%20training%20or%20reporting."
+                class="btn btn-primary"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                💬 Open WhatsApp chat
+              </a>
+            </div>
+            <div class="contact-highlight">
+              If you prefer email or another platform, mention it in your message and
+              it can be shifted there after the first contact.
+            </div>
+          </div>
+
+          <form class="contact-form" onsubmit="handleFormSubmit(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input id="name" type="text" placeholder="Your name" required />
+              </div>
+              <div class="form-group">
+                <label for="role">Role / Company</label>
+                <input
+                  id="role"
+                  type="text"
+                  placeholder="Founder, Manager, Student, etc."
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="need">What do you need help with?</label>
+              <textarea
+                id="need"
+                placeholder="Example: I need a daily sales report in Google Sheets + a dashboard, and basic training for my team."
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="preferred">Preferred time / language (optional)</label>
+              <input
+                id="preferred"
+                type="text"
+                placeholder="Example: Evenings, Hindi + English"
+              />
+            </div>
+
+            <div class="form-footer">
+              <button type="submit" class="btn btn-outline">
+                Generate WhatsApp message
+              </button>
+              <p>
+                This form doesn’t send data anywhere. It just helps you build a
+                message which you can paste into WhatsApp.
+              </p>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-inner">
+        <div>© <span id="year"></span> Google Sheets & Dashboard Training.</div>
+        <div class="footer-links">
+          <a href="#top">Back to top</a>
+          <a
+            href="https://wa.me/918445030767"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Floating WhatsApp button -->
+  <a
+    href="https://wa.me/918445030767?text=Hi%2C%20I%27m%20visiting%20your%20website%20and%20would%20like%20to%20know%20more%20about%20your%20services."
+    class="whatsapp-fab"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    💬 Chat on WhatsApp
+  </a>
+
+  <script>
+    // Set current year in footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Build a WhatsApp message from the contact "form"
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      var name = document.getElementById("name").value.trim();
+      var role = document.getElementById("role").value.trim();
+      var need = document.getElementById("need").value.trim();
+      var preferred = document.getElementById("preferred").value.trim();
+
+      var lines = [];
+      if (name) lines.push("Name: " + name);
+      if (role) lines.push("Role/Company: " + role);
+      if (need) lines.push("Need: " + need);
+      if (preferred) lines.push("Preferred time/language: " + preferred);
+
+      var base =
+        "Hi, I visited your website and would like to discuss Google Sheets / Excel / Looker Studio training or reporting.%0A%0A";
+      var details = encodeURIComponent(lines.join("\n"));
+
+      var waUrl =
+        "https://wa.me/918445030767?text=" +
+        base +
+        details;
+
+      window.open(waUrl, "_blank");
+    }
+  </script>
+</body>
+</html>
